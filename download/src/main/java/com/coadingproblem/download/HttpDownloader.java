@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HttpDownloader extends Downloader {
 
+	static Logger logger = Logger.getLogger(HttpDownloader.class.getName());
 	public HttpDownloader(URL url, String outputFolder) {
 		super(url, outputFolder);
 		download();
@@ -25,8 +28,8 @@ public class HttpDownloader extends Downloader {
 
 			// Checking response code it should be withIn 200 range
 			if (conn.getResponseCode() / 100 != 2) {
-				System.out.println("Response code is " + conn.getResponseCode());
-				System.out.println("Response code is " + conn.getResponseMessage());
+				logger.log(Level.SEVERE, "Response code is " + conn.getResponseCode());
+				logger.log(Level.SEVERE, "Response code is " + conn.getResponseMessage());
 			}
 
 			// Check for valid content length.

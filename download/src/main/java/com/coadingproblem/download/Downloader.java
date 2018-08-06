@@ -2,9 +2,9 @@ package com.coadingproblem.download;
 
 
 import java.net.URL;
-import java.util.Observable;
 
-public abstract class Downloader extends Observable implements Runnable {
+
+public abstract class Downloader  implements Runnable {
 
 	/** URL to download the file */
 	protected URL URL;
