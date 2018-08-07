@@ -20,4 +20,8 @@ For testing the download functionality I have added a JUnit test case for all th
 2) FTP  ====> It will create amoke server here I have used FakeFtpServer jar to create mock FTP.
 2) SFTP ===> Created a default server and uploded the file from the resources file and downloading the same file 
              to test the download functionality. uploadFile methos is use to upload the file in default created server.
-
+             
+ Belwo is the URL format 
+ 1)http:  http://<Host Name>/<FileName>
+ 2)ftp : ftp://<host Name>:<port Number>/<file Name>
+ 3)sftp : sftp://<host Name>:<port Number>/<file Name>
