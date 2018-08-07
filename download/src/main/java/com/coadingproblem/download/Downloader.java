@@ -1,10 +1,17 @@
 package com.coadingproblem.download;
 
-
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+public abstract class Downloader implements Runnable {
 
-public abstract class Downloader  implements Runnable {
+	static Logger logger = Logger.getLogger(Downloader.class.getName());
 
 	/** URL to download the file */
 	protected URL URL;
@@ -30,7 +37,6 @@ public abstract class Downloader  implements Runnable {
 	/** downloaded size of the file (in bytes) */
 	protected int mDownloaded;
 
-	
 	/**
 	 * Constructor
 	 * 
@@ -44,7 +50,7 @@ public abstract class Downloader  implements Runnable {
 		String fileURL = url.getFile();
 		FileName = fileURL.substring(fileURL.lastIndexOf('/') + 1);
 		FileSize = -1;
-		
+
 		mDownloaded = 0;
 
 	}
@@ -102,5 +108,38 @@ public abstract class Downloader  implements Runnable {
 
 	}
 
-	
+	public void writeDate(InputStream inputstream) throws IOException {
+		BufferedInputStream inputStream = null;
+		FileOutputStream outputStream = null;
+		try {
+
+			inputStream = new BufferedInputStream(inputstream);
+			outputStream = new FileOutputStream(OutputFolder + FileName);
+			byte[] buffer = new byte[1024];
+			int count = 0;
+			while ((count = inputStream.read(buffer, 0, 1024)) != -1) {
+				outputStream.write(buffer, 0, count);
+			}
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Error:", e.getStackTrace());
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (outputStream != null) {
+				outputStream.close();
+			}
+			logger.info("Deleting the file");
+			File check = new File(OutputFolder + FileName);
+			check.delete();
+
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (outputStream != null) {
+				outputStream.close();
+			}
+		}
+	}
+
 }

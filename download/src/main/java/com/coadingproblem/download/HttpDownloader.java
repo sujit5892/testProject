@@ -1,8 +1,6 @@
 package com.coadingproblem.download;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Level;
@@ -11,15 +9,14 @@ import java.util.logging.Logger;
 public class HttpDownloader extends Downloader {
 
 	static Logger logger = Logger.getLogger(HttpDownloader.class.getName());
+
 	public HttpDownloader(URL url, String outputFolder) {
 		super(url, outputFolder);
-		download();
 	}
 
 	public void run() {
 		HttpURLConnection conn = null;
-		RandomAccessFile raf=null;
-		BufferedInputStream in=null;
+
 		try {
 			// Opening connection to URL
 			conn = (HttpURLConnection) URL.openConnection();
@@ -31,42 +28,14 @@ public class HttpDownloader extends Downloader {
 				logger.log(Level.SEVERE, "Response code is " + conn.getResponseCode());
 				logger.log(Level.SEVERE, "Response code is " + conn.getResponseMessage());
 			}
-
-			// Check for valid content length.
-			int contentLength = conn.getContentLength();
-
-			if (FileSize == -1) {
-				FileSize = contentLength;
-			}
-
-			 in = new BufferedInputStream(conn.getInputStream());
-
-			// open the output file and seek to the start location
-			 raf = new RandomAccessFile(OutputFolder + FileName, "rw");
-			raf.seek(0);
-			byte data[] = new byte[1024];
-			int numRead;
-			while (((numRead = in.read(data, 0, 1024)) != -1)) {
-				raf.write(data, 0, numRead);
-				downloaded(numRead);
-			}
-
+			writeDate(conn.getInputStream());
 		} catch (Exception e) {
-
-		} finally {
-			if (conn != null)
+			e.printStackTrace();
+		}finally {
+			if(conn!=null){
 				conn.disconnect();
-			if (raf != null) {
-				try {
-					raf.close();
-				} catch (IOException e) {}
-			}
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {}
 			}
 		}
-	}
 
+	}
 }
