@@ -22,7 +22,6 @@ public class HttpDownloader extends Downloader {
 			conn = (HttpURLConnection) URL.openConnection();
 			conn.setConnectTimeout(10000);
 			conn.connect();
-
 			// Checking response code it should be withIn 200 range
 			if (conn.getResponseCode() / 100 != 2) {
 				logger.log(Level.SEVERE, "Response code is " + conn.getResponseCode());

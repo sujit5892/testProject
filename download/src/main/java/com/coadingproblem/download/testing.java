@@ -16,7 +16,7 @@ public class testing {
 		BufferedReader reader;
 		List<String> list=new ArrayList<String>();
 		final DownloaderFactory downloadFactory=new DownloaderFactory();
-		try {
+		/*try {
 			reader = new BufferedReader(new FileReader(downloadFactory.properties().getProperty("URL-FileLocation")));
 			String line = reader.readLine();
 			while (line != null) {
@@ -27,8 +27,9 @@ public class testing {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		list.parallelStream().forEach(e->downloadFactory.getInstance(e));
+		*/
+		list.add("ftp://test.rebex.net/pub/example/ConsoleClient.png");
+		list.parallelStream().forEach(e->downloadFactory.getInstance(e).download());
 			
 		
 	}

@@ -17,6 +17,8 @@ public abstract class Downloader {
 	protected URL URL;
 
 	protected String serverURL;
+	
+	protected int port;
 
 	/** Output folder for downloaded file */
 	protected String OutputFolder;
@@ -57,7 +59,8 @@ public abstract class Downloader {
 
 	protected Downloader(URL url, String outputFolder, String userName, String password) {
 
-		serverURL = url.getAuthority();
+		serverURL = url.getHost();
+		port=url.getPort();
 		OutputFolder = outputFolder;
 		this.userName = userName;
 		this.password = password;
@@ -80,7 +83,7 @@ public abstract class Downloader {
 	public int getFileSize() {
 		return FileSize;
 	}
-
+    
 	/**
 	 * Get the current progress of the download
 	 */
@@ -94,14 +97,12 @@ public abstract class Downloader {
 	public int getState() {
 		return State;
 	}
-
+	
+	
 	
 	public abstract void download();
 
-	protected synchronized void downloaded(int value) {
-		mDownloaded += value;
-
-	}
+	
 
 	public void writeDate(InputStream inputstream) throws IOException {
 		BufferedInputStream inputStream = null;
@@ -123,7 +124,6 @@ public abstract class Downloader {
 			if (outputStream != null) {
 				outputStream.close();
 			}
-			logger.info("Deleting the file");
 			File check = new File(OutputFolder + FileName);
 			check.delete();
 

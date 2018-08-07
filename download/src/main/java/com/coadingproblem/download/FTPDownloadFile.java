@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 
 public class FTPDownloadFile extends Downloader {
 
@@ -21,8 +22,17 @@ public class FTPDownloadFile extends Downloader {
 
 		FTPClient ftpClient = new FTPClient();
 		try {
-
+			
+			if(port<0){
 			ftpClient.connect(serverURL);
+			}else{
+				ftpClient.connect(serverURL, port);
+			}
+			int reply = ftpClient.getReplyCode();
+	        if (!FTPReply.isPositiveCompletion(reply)) {
+	        	ftpClient.disconnect();
+	            throw new IOException("Exception in connecting to FTP Server");
+	        }
 			ftpClient.login(userName, password);
 			ftpClient.enterLocalPassiveMode();
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -35,7 +45,8 @@ public class FTPDownloadFile extends Downloader {
 				logger.info("downloaded successfully.");
 			}
 			} catch (Exception ex) {
-			logger.log(Level.SEVERE,"Error: ",ex.getStackTrace());
+			logger.log(Level.SEVERE,"Error: ");
+			ex.printStackTrace();
 			
 		} finally {
 			try {
@@ -44,7 +55,8 @@ public class FTPDownloadFile extends Downloader {
 					ftpClient.disconnect();
 				}
 			} catch (IOException ex) {
-				logger.log(Level.SEVERE,"Error: ",ex.getStackTrace());
+				logger.log(Level.SEVERE,"Error: ");
+				ex.printStackTrace();
 			}
 		}
 
