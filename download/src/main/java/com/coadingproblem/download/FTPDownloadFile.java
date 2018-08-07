@@ -17,7 +17,7 @@ public class FTPDownloadFile extends Downloader {
 		
 	}
 
-	public void run() {
+	public void download() {
 
 		FTPClient ftpClient = new FTPClient();
 		try {
@@ -49,4 +49,6 @@ public class FTPDownloadFile extends Downloader {
 		}
 
 	}
+
+	
 }

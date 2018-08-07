@@ -14,7 +14,7 @@ public class HttpDownloader extends Downloader {
 		super(url, outputFolder);
 	}
 
-	public void run() {
+	public void download() {
 		HttpURLConnection conn = null;
 
 		try {

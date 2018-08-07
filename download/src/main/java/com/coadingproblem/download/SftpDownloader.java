@@ -13,7 +13,7 @@ public class SftpDownloader extends Downloader {
 
 	}
 
-	public void run() {
+	public void download() {
 
 		Session session = null;
 		Channel channel = null;

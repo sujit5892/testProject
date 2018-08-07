@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class Downloader implements Runnable {
+public abstract class Downloader {
 
 	static Logger logger = Logger.getLogger(Downloader.class.getName());
 
@@ -95,13 +95,8 @@ public abstract class Downloader implements Runnable {
 		return State;
 	}
 
-	/**
-	 * Start or resume download
-	 */
-	protected void download() {
-		Thread t = new Thread(this);
-		t.start();
-	}
+	
+	public abstract void download();
 
 	protected synchronized void downloaded(int value) {
 		mDownloaded += value;
