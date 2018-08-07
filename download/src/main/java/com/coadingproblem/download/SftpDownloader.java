@@ -1,6 +1,6 @@
 package com.coadingproblem.download;
 
-import java.net.URL;
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -31,7 +31,6 @@ public class SftpDownloader extends Downloader {
 			channel.connect();
 			channelSftp = (ChannelSftp) channel;
 			String remoteFile = FileName.substring(1);
-			System.out.println(remoteFile);
 			FileName = FileName.substring(FileName.lastIndexOf('/') + 1);
 			writeDate(channelSftp.get(remoteFile));
 

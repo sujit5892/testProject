@@ -17,6 +17,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -24,7 +26,7 @@ import java.util.Properties;
 
 public class SftpClientTest {
     private SshServer sshd;
-    private Downloader downloder;
+    private Downloader downloader;
     
     private String server = "localhost";
     private String login = "login";
@@ -45,7 +47,7 @@ public class SftpClientTest {
     @After
     public void tearDown() throws InterruptedException {
         sshd.stop();
-        cleanFiles();
+       
     }
  
     /*
@@ -62,8 +64,7 @@ public class SftpClientTest {
     	
     	try {
         	JSch jsch = new JSch();
-        	System.out.println(server+"  "+login+"   "+password+"   "+sshd.getPort());
-             session = jsch.getSession(login, server,sshd.getPort());
+        	session = jsch.getSession(login, server,sshd.getPort());
             session.setPassword(password);
             Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
@@ -101,19 +102,9 @@ public class SftpClientTest {
     public void testRetrieveFile() throws Exception {
     	
     	DownloaderFactory download=new DownloaderFactory();
-    	downloder=download.getInstance("sftp://localhost:"+sshd.getPort()+"/target/uploaded");
-    	downloder.download();
+    	downloader=download.getInstance("sftp://localhost:"+sshd.getPort()+"/target/uploaded");
+    	downloader.download();
+    	File file = new File(downloader.OutputFolder);
+		assertTrue((Arrays.asList(file.list())).contains(downloader.FileName));
     }
-    
-    private void cleanFiles() {
-        File uploaded = new File("target/uploaded.txt");
-        if (uploaded.exists()) {
-            uploaded.delete();
-        }
-
-        File downloaded = new File("target/downloaded.txt");
-        if (downloaded.exists()) {
-            downloaded.delete();
-        }
-    }
-}
+  }
