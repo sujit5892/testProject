@@ -8,9 +8,8 @@ import java.util.logging.Logger;
 
 public class DownloaderFactory {
 	static Logger logger = Logger.getLogger(DownloaderFactory.class.getName());
-	
-	
-	public Properties properties(){
+
+	public Properties properties() {
 		Properties prop = new Properties();
 		try {
 			prop.load(DownloaderFactory.class.getClassLoader().getResourceAsStream("config.properties"));
@@ -19,35 +18,34 @@ public class DownloaderFactory {
 		}
 		return prop;
 	}
-	
-	public Downloader getInstance(String urlString){
-		URL url=null;
+
+	public Downloader getInstance(String urlString) {
+		URL url = null;
+		String protocol = null;
 		try {
-			url = new URL(urlString);
+			if (!urlString.startsWith("sftp")) {
+				url = new URL(urlString);
+				protocol = url.getProtocol();
+			}
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		String protocol=url.getProtocol();
-		logger.info("Protocol is : "+protocol);
-		Properties prop=properties();
-		
-		if(protocol.equalsIgnoreCase("ftp")){
-			Downloader downloader=new FTPDownloadFile(url,prop.getProperty("Output-Folder"),prop.getProperty("FTP-UserName"),prop.getProperty("FTP-Password"));
+
+		Properties prop = properties();
+
+		if (("ftp").equalsIgnoreCase(protocol)) {
+			Downloader downloader = new FTPDownloadFile(url, prop.getProperty("Output-Folder"),
+					prop.getProperty("FTP-UserName"), prop.getProperty("FTP-Password"));
 			return downloader;
-		}else if(protocol.equalsIgnoreCase("sftp")){
-			Downloader downloader=new SftpDownloader(url,prop.getProperty("Output-Folder"),prop.getProperty("FTP-UserName"),prop.getProperty("FTP-Password"));
+		} else if (("http").equalsIgnoreCase(protocol)) {
+			Downloader downloader = new HttpDownloader(url, prop.getProperty("Output-Folder"));
 			return downloader;
-		}else if(protocol.equalsIgnoreCase("http")){
-			Downloader downloader=new HttpDownloader(url,prop.getProperty("Output-Folder"));
+		} else {
+			Downloader downloader = new SftpDownloader(urlString, prop.getProperty("Output-Folder"),
+					prop.getProperty("SFTP-UserName"), prop.getProperty("SFTP-Password"));
 			return downloader;
-		}else{
-			
 		}
-		
-		return null;
-		
+
 	}
 
 }

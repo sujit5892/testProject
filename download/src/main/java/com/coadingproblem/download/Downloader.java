@@ -17,7 +17,7 @@ public abstract class Downloader {
 	protected URL URL;
 
 	protected String serverURL;
-	
+
 	protected int port;
 
 	/** Output folder for downloaded file */
@@ -60,13 +60,30 @@ public abstract class Downloader {
 	protected Downloader(URL url, String outputFolder, String userName, String password) {
 
 		serverURL = url.getHost();
-		port=url.getPort();
+		port = url.getPort();
 		OutputFolder = outputFolder;
 		this.userName = userName;
 		this.password = password;
 		FileName = url.getPath();
 		FileSize = -1;
 		mDownloaded = 0;
+
+	}
+
+	public Downloader(String url, String outputFolder, String userName, String password) {
+
+		String s_URL[] = url.split("//");
+		System.out.println(s_URL);
+		String s1 = s_URL[1];
+		String s2[] = s1.split(":");
+		serverURL = s2[0];
+		String portNumber[] = url.split(":");
+		String portNum[] = (portNumber[2].split("/"));
+		port = Integer.valueOf(portNum[0]);
+		FileName = url.replace(("sftp://" + serverURL + ":" + port), "");
+		OutputFolder = outputFolder;
+		this.userName = userName;
+		this.password = password;
 
 	}
 
@@ -83,7 +100,7 @@ public abstract class Downloader {
 	public int getFileSize() {
 		return FileSize;
 	}
-    
+
 	/**
 	 * Get the current progress of the download
 	 */
@@ -97,12 +114,8 @@ public abstract class Downloader {
 	public int getState() {
 		return State;
 	}
-	
-	
-	
-	public abstract void download();
 
-	
+	public abstract void download();
 
 	public void writeDate(InputStream inputstream) throws IOException {
 		BufferedInputStream inputStream = null;
