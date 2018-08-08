@@ -16,6 +16,7 @@ public class URLHandler {
 	public static String protocol(String urlString) {
 		/*
 		 * java.net.url doesn't supported protocols
+		 * 
 		 * */
 		try {
 			if (!urlString.startsWith("sftp")) {
