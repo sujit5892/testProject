@@ -16,7 +16,6 @@
     <FTP-Password>password</FTP-Password>
     <SFTP-UserName>login</SFTP-UserName>
     <SFTP-Password>testPassword</SFTP-Password>
-    <URL-FileLocation>C:\Users\sujit\Desktop\New folder (2)\testing.txt</URL-FileLocation>
     <Output-Folder>C:\Users\sujit\Desktop\FTP\</Output-Folder>
   </properties>
 
